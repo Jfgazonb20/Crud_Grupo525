@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Detalles del Usuario</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f9f9f9; /* Color de fondo suave */
+      border-radius: 5px; /* Bordes redondeados */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    }
+    h1 {
+      text-align: center; /* Centrar el encabezado */
+      color: #333; /* Color del texto del encabezado */
+    }
+    p {
+      font-size: 16px; /* Tamaño de fuente */
+      line-height: 1.5; /* Espaciado entre líneas */
+    }
+    strong {
+      color: #555; /* Color del texto en negrita */
+    }
+    .btn {
+      padding: 10px 15px; /* Relleno para botones */
+      margin: 5px; /* Espaciado entre botones */
+      text-decoration: none; /* Sin subrayado */
+      color: white; /* Color del texto de los botones */
+      border-radius: 5px; /* Bordes redondeados para los botones */
+    }
+    .btn-warning {
+      background-color: #ffcc00; /* Color de fondo para el botón de editar */
+    }
+    .btn-primary {
+      background-color: #007bff; /* Color de fondo para el botón de volver */
+    }
+    .btn:hover {
+      opacity: 0.9; /* Efecto al pasar el mouse sobre los botones */
+    }
+  </style>
+</head>
+<body>
+  <h1>Detalles del Usuario</h1>
+
+  <p>
+    <strong>ID:</strong>
+    <%= @user.id %>
+  </p>
+
+  <p>
+    <strong>Nombre:</strong>
+    <%= @user.name %>
+  </p>
+
+  <p>
+    <strong>Edad:</strong>
+    <%= @user.age %>
+  </p>
+
+  <p>
+    <strong>Ciudad:</strong>
+    <%= @user.city %>
+  </p>
+
+  <div style="text-align: center;"> <!-- Centrar los botones -->
+    <%= link_to 'Editar', edit_user_path(@user), class: 'btn btn-warning' %> |
+    <%= link_to 'Volver', users_path, class: 'btn btn-primary' %>
+  </div>
+</body>
+</html>

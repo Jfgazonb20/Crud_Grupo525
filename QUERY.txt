@@ -1,0 +1,13 @@
+SELECT 
+    u.id, 
+    u.name, 
+    EXTRACT(YEAR FROM AGE(u.date_of_birth)) AS age, 
+    u.city AS city_name, 
+    u.email, 
+    u.address, 
+    u.country, 
+    u.apartment
+FROM 
+    users u
+LEFT JOIN 
+    cities c ON u.city = c.name;  -- Asegúrate de que c.name contenga los nombres de las ciudades

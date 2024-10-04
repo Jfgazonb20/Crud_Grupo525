@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= yield(:title) || "PDF" %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff; /* Color de fondo blanco */
+    }
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px; /* Espacio inferior para separar del contenido */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px; /* Espacio inferior para separar de otros elementos */
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left; /* Alineación del texto a la izquierda */
+    }
+    th {
+      background-color: #f2f2f2; /* Color de fondo para encabezados */
+      font-weight: bold; /* Negrita en los encabezados */
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9; /* Color de fondo alternado para filas */
+    }
+    tr:hover {
+      background-color: #f1f1f1; /* Color de fondo al pasar el mouse sobre filas */
+    }
+  </style>
+</head>
+<body>
+  <h1>Listado de Usuarios</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Ciudad</th>
+        <th>Email</th>
+        <th>Dirección</th>
+        <th>País</th>
+        <th>Casa/Apartamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= yield %> <!-- Aquí se insertará el contenido dinámico de la tabla -->
+    </tbody>
+  </table>
+</body>
+</html>

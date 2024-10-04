@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Listado de Usuarios</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f9f9f9; /* Color de fondo suave */
+    }
+    h1 {
+      text-align: center; /* Centrar el encabezado */
+      color: #333; /* Color del texto del encabezado */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px; /* Espacio entre el título y la tabla */
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left; /* Alinear el texto a la izquierda */
+    }
+    th {
+      background-color: #f2f2f2; /* Color de fondo para encabezados */
+      font-weight: bold; /* Negrita para encabezados */
+    }
+    tr:hover {
+      background-color: #f1f1f1; /* Color al pasar el mouse sobre las filas */
+    }
+    .btn {
+      padding: 10px 15px; /* Relleno para botones */
+      margin: 5px; /* Espaciado entre botones */
+      text-decoration: none; /* Sin subrayado */
+      color: white; /* Color del texto de los botones */
+      border-radius: 5px; /* Bordes redondeados para los botones */
+      transition: background-color 0.3s; /* Transición suave para el color de fondo */
+    }
+    .btn-primary {
+      background-color: #007bff; /* Color de fondo para el botón de editar */
+    }
+    .btn-danger {
+      background-color: #dc3545; /* Color de fondo para el botón de eliminar */
+    }
+    .btn-success {
+      background-color: #28a745; /* Color de fondo para el botón de nuevo usuario */
+    }
+    .btn-secondary {
+      background-color: #6c757d; /* Color de fondo para el botón de JSON */
+    }
+    .btn:hover {
+      opacity: 0.9; /* Efecto al pasar el mouse sobre los botones */
+    }
+  </style>
+</head>
+<body>
+  <h1>Listado de Usuarios</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Ciudad</th>
+        <th>Email</th>
+        <th>Dirección</th>
+        <th>País</th>
+        <th>Apartamento</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.age %></td>
+          <td><%= user.city %></td>
+          <td><%= user.email %></td>
+          <td><%= user.address %></td>
+          <td><%= user.country %></td>
+          <td><%= user.apartment %></td>
+          <td>
+            <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-primary' %>
+            <a href="#" class="btn btn-danger delete-user" data-id="<%= user.id %>">Eliminar</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3>Total por ciudad</h3>
+  <% @total_by_city.each do |city, count| %>
+    <p><%= "#{city}: #{count}" %></p>
+  <% end %>
+
+  <div style="text-align: center;"> <!-- Centrar los botones -->
+    <%= link_to 'Nuevo Usuario', new_user_path, class: 'btn btn-success' %>
+    <%= link_to 'Exportar a PDF', export_users_users_path(format: :pdf), class: 'btn btn-primary' %>
+    <%= link_to 'Listado en JSON', list_json_users_users_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteButtons = document.querySelectorAll('.delete-user');
+
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const userId = this.getAttribute('data-id');
+          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+          if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            fetch(`/users/${userId}`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-Token': csrfToken,
+                'Accept': 'application/json'
+              }
+            }).then(response => {
+              if (response.ok) {
+                alert("Usuario eliminado correctamente.");
+                location.reload(); // Recarga la página para reflejar la eliminación
+              } else {
+                alert("No se pudo eliminar el usuario.");
+              }
+            }).catch(error => {
+              console.error('Error:', error);
+              alert("Ocurrió un error al intentar eliminar el usuario.");
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

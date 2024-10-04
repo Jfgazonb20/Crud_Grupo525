@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Usuarios</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    h1, h3 {
+      color: #343a40;
+    }
+    table {
+      margin: 20px 0;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #dee2e6;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .btn {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Usuarios</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Ciudad</th>
+          <th>Email</th>
+          <th>Dirección</th>
+          <th>País</th>
+          <th>Casa/Apartamento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.age %></td>
+            <td><%= user.city %></td>
+            <td><%= user.email %></td>
+            <td><%= user.address %></td>
+            <td><%= user.country %></td>
+            <td><%= user.apartment %></td>
+            <td>
+              <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-primary' %>
+              <a href="#" class="btn btn-danger delete-user" data-id="<%= user.id %>">Eliminar</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h3>Total por ciudad</h3>
+    <% @total_by_city.each do |city, count| %>
+      <p><%= "#{city}: #{count}" %></p>
+    <% end %>
+
+    <%= link_to 'Nuevo Usuario', new_user_path, class: 'btn btn-success' %>
+<%= link_to 'Exportar Usuarios a PDF', export_users_users_path(format: :pdf), class: 'btn btn-primary' %>
+    <%= link_to 'Listado en JSON', list_json_users_users_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteButtons = document.querySelectorAll('.delete-user');
+
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const userId = this.getAttribute('data-id');
+          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+          if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            fetch(`/users/${userId}`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-Token': csrfToken,
+                'Accept': 'application/json'
+              }
+            }).then(response => {
+              if (response.ok) {
+                alert("Usuario eliminado correctamente.");
+                // Recarga la página para reflejar la eliminación
+                location.reload(); 
+              } else {
+                alert("No se pudo eliminar el usuario.");
+              }
+            }).catch(error => {
+              console.error('Error:', error);
+              alert("Ocurrió un error al intentar eliminar el usuario.");
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: pipepc  # Nombre de usuario
+  password: root    # Contraseña
+  host: localhost
+  port: 5432
+
+development:
+  <<: *default
+  database: nuevo_crud_development
+
+test:
+  <<: *default
+  database: nuevo_crud_development_test
+
+production:
+  <<: *default
+  database: nuevo_crud_development_production
+  # username: <%= ENV['DATABASE_USERNAME'] %>
+  # password: <%= ENV['DATABASE_PASSWORD'] %>

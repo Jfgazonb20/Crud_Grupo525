@@ -1,0 +1,81 @@
+<h1>Editar Usuario</h1>
+
+<%= form_with(model: @user, local: true) do |form| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> impidió que el usuario se guardara:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.label :date_of_birth, "date_of_birth" %>
+    <%= form.date_select :date_of_birth, start_year: 1900, end_year: Date.today.year, class: 'form-input', id: 'date_of_birth' %>
+  </div>
+
+  <div>
+    <%= form.label :age %>
+    <%= form.number_field :age, class: 'form-input', id: 'age', readonly: true %>
+  </div>
+
+  <div>
+    <%= form.label :city %>
+    <%= form.text_field :city, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.label :email %>
+    <%= form.email_field :email, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.label :address %>
+    <%= form.text_field :address, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.label :country %>
+    <%= form.text_field :country, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.label :apartment %>
+    <%= form.text_field :apartment, class: 'form-input' %>
+  </div>
+
+  <div>
+    <%= form.submit "Actualizar Usuario", class: 'btn btn-warning' %>
+  </div>
+<% end %>
+
+<%= link_to 'Volver', users_path, class: 'btn btn-primary' %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dateOfBirthInput = document.getElementById('date_of_birth');
+    const ageInput = document.getElementById('age');
+
+    dateOfBirthInput.addEventListener('change', function() {
+      const birthDate = new Date(this.value);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+
+      // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      ageInput.value = age; // Asignar la edad calculada al campo de edad
+    });
+  });
+</script>
