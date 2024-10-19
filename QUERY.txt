@@ -10,4 +10,4 @@ SELECT
 FROM 
     users u
 LEFT JOIN 
-    cities c ON u.city = c.name;  -- Asegúrate de que c.name contenga los nombres de las ciudades
+    cities c ON u.city = c.name;  
